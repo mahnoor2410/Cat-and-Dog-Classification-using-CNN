@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat or Dog Prediction</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Image to Predict if it's a Cat or Dog</h1>
+
+        <!-- Upload Image Form -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="imageInput">Choose an Image</label>
+            <input type="file" id="imageInput" name="file" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+
+        {% if file_name %}
+            <p><strong>Uploaded File: </strong>{{ file_name }}</p>
+        {% endif %}
+
+        {% if message %}
+            <h2>{{ message }}</h2>
+            {% if probability_cat and probability_dog %}
+                <p>Cat Probability: {{ probability_cat }}%</p>
+                <p>Dog Probability: {{ probability_dog }}%</p>
+            {% endif %}
+        {% elif error %}
+            <div class="message">{{ error }}</div>
+        {% endif %}
+
+        {% if image %}
+            <h3>Uploaded Image:</h3>
+            <img src="{{ image }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+        {% endif %}
+    </div>
+</body>
+</html>
